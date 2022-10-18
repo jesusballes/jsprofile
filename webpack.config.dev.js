@@ -5,6 +5,7 @@ const CopyWebpack = require('copy-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const DotEnv = require('dotenv-webpack');
+const BundleAnalyzer = require('webpack-bundle-analyzer');
 
 module.exports = {
     entry: './src/index.js',
@@ -15,7 +16,8 @@ module.exports = {
 
     },
     mode: "development",
-    watch: true,
+    devtool: 'source-map',
+    // watch: true,
     resolve: {
         extensions: ['.js', ],
         alias: {
@@ -80,7 +82,8 @@ module.exports = {
                 ]
             }
         ),
-        new DotEnv()
+        new DotEnv(),
+        // new BundleAnalyzer(),
     ],
     optimization: {
         minimize: true,
@@ -88,5 +91,11 @@ module.exports = {
             new CssMinimizerPlugin(),
             new TerserPlugin(),
         ]
+    },
+    devServer: {
+        static: path.join(__dirname, 'dist'),
+        compress: true,
+        historyApiFallback: true,
+        port: 3309
     }
 }
